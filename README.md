@@ -9,7 +9,7 @@ The driver is primarily designed for use with RePlay OS, which can translate mou
 
 Different games require different speed adjustments for optimal control. If you find that the trackball or paddle is not functioning as expected, try adjusting the sensitivity settings in your emulator or core options to achieve the desired responsiveness.
 
-### Build and Install
+## Build and Install
 
 ```shell
 make modules
@@ -20,7 +20,7 @@ sudo modprobe taito_pt
 
 To reload after compiling you will first need to unload it using `sudo modprobe -r taito_pt`.
 
-# Blacklist the Default HID Driver
+## Blacklist the Default HID Driver
 
 By default, the controller is managed by the standard HID device driver. To enable the custom driver to work, you must disable the default HID driver by blacklisting it in the kernel. On Raspberry Pi and other small board devices, you can blacklist the default driver by adding the following to your cmdline.txt file:
 `usbhid.quirks=0x0ae4:0x0701:0x0004`
