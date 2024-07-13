@@ -92,7 +92,7 @@ static int taito_probe(struct usb_interface *interface, const struct usb_device_
     input_set_drvdata(input, taito);
 
     input->name = "TAITO USB Paddle & Trackball Controller";
-    input->phys = "usb/input0";
+    input->phys = "taito_pt/usb/input0";
     input->id.bustype = BUS_USB;
     input->id.vendor = USB_TAITO_VENDOR_ID;
     input->id.product = USB_TAITO_PRODUCT_ID;
