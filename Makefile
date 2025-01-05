@@ -12,11 +12,11 @@ install:
 	$(MAKE) -C $(BUILD_DIR) M=$(PWD) modules_install
 
 uninstall:
-	rm -f /lib/modules/${KVERSION}/kernel/drivers/usb/taito_driver.ko
+	rm -f /lib/modules/${KVERSION}/kernel/drivers/usb/taito_driver.ko.xz
 	depmod -a
 
 clean:
-	rm -rf *~ *.o .*.cmd *.mod.c *.ko *.ko.unsigned .depend \
+	rm -rf *~ *.o .*.cmd *.mod *.mod.c *.ko *.ko.unsigned .depend \
     	.tmp_versions modules.order Module.symvers Module.markers
 
 .PHONY: modules install uninstall clean
