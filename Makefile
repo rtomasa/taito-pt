@@ -1,28 +1,33 @@
+KVERSION    ?= $(shell uname -r)
+BUILD_DIR   ?= /lib/modules/$(KVERSION)/build
+PWD         := $(shell pwd)
+MODULE_NAME := taito_pt
+SRC_FILE    := $(MODULE_NAME).c  # Critical: Must match your actual source filename
+
 ifeq ($(KERNELRELEASE),)
 
-KVERSION ?= $(shell uname -r)
-BUILD_DIR ?= /lib/modules/${KVERSION}/build
-
-PWD := $(shell pwd)
+all: modules
 
 modules:
+	@echo "Building module from source: $(SRC_FILE)"
 	$(MAKE) -C $(BUILD_DIR) M=$(PWD) modules
 
-install:
+install: modules
 	$(MAKE) -C $(BUILD_DIR) M=$(PWD) modules_install
+	depmod -a
 
 uninstall:
-	rm -f /lib/modules/${KVERSION}/kernel/drivers/usb/taito_driver.ko.xz
+	rm -f /lib/modules/$(KVERSION)/updates/$(MODULE_NAME).ko*
 	depmod -a
 
 clean:
-	rm -rf *~ *.o .*.cmd *.mod *.mod.c *.ko *.ko.unsigned .depend \
-    	.tmp_versions modules.order Module.symvers Module.markers
+	$(MAKE) -C $(BUILD_DIR) M=$(PWD) clean
 
-.PHONY: modules install uninstall clean
+.PHONY: all modules install uninstall clean
 
 else
 
-obj-m := taito_pt.o
+# Kernel build variables
+obj-m := $(MODULE_NAME).o
 
 endif
