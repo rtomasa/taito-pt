@@ -1,33 +1,25 @@
+# Allow override via environment variables (e.g., `make KVERSION=5.15.0-86-generic`)
 KVERSION    ?= $(shell uname -r)
 BUILD_DIR   ?= /lib/modules/$(KVERSION)/build
 PWD         := $(shell pwd)
 MODULE_NAME := taito_pt
-SRC_FILE    := $(MODULE_NAME).c  # Critical: Must match your actual source filename
+INSTALL_DIR := /lib/modules/$(KVERSION)/kernel/drivers/usb
 
+# Kernel module build logic (handles two-pass build system)
 ifeq ($(KERNELRELEASE),)
 
-all: modules
-
-modules:
-	@echo "Building module from source: $(SRC_FILE)"
+# User-facing targets
+all:
 	$(MAKE) -C $(BUILD_DIR) M=$(PWD) modules
-
-install: modules
-	$(MAKE) -C $(BUILD_DIR) M=$(PWD) modules_install
-	depmod -a
-
-uninstall:
-	rm -f /lib/modules/$(KVERSION)/updates/$(MODULE_NAME).ko*
-	depmod -a
 
 clean:
 	$(MAKE) -C $(BUILD_DIR) M=$(PWD) clean
 
-.PHONY: all modules install uninstall clean
+.PHONY: all clean
 
 else
 
-# Kernel build variables
+# Kernel-facing configuration (second pass)
 obj-m := $(MODULE_NAME).o
 
 endif
